@@ -3,21 +3,21 @@ import mongoose from "mongoose";
 
 const postSchema = mongoose.Schema(
   {
-    userId: {
+    usuarioId: {
       type: String,
       required: true,
     },
-    firstName: {
+    nome: {
       type: String,
       required: true,
     },
-    lastName: {
+    sobrenome: {
       type: String,
       required: true,
     },
-    location: String,
-    description: String,
-    picturePath: String,
+    localizacao: String,
+    descricao: String,
+    fotoPerfil: String,
     userPicturePath: String,
     likes: {
       type: Map,

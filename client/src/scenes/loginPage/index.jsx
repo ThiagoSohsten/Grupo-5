@@ -1,5 +1,5 @@
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
-import Form from "./Form";
+import Formulario from "./Formulario";
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -25,9 +25,9 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to Socipedia, the Social Media for Sociopaths!
+        Bem-vindo a LIBREFLIX, uma rede social para a comunidade!
         </Typography>
-        <Form />
+        <Formulario />
       </Box>
     </Box>
   );

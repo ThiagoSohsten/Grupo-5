@@ -1,38 +1,36 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import User from "../models/Usuario.js";
 
 /* REGISTER USER */
-export const register = async (req, res) => {
+export const registro = async (req, res) => {
   try {
     const {
-      firstName,
-      lastName,
+      nome,
+      sobrenome,
       email,
-      password,
-      picturePath,
-      friends,
-      location,
-      occupation,
+      senha,
+      fotoPerfil,
+      amigos,
+      localizacao,
+      ocupacao,
     } = req.body;
 
     const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
+    const senhaHash = await bcrypt.hash(senha, salt);
 
-    const newUser = new User({
-      firstName,
-      lastName,
+    const novoUsuario = new User({
+      nome,
+      sobrenome,
       email,
-      password: passwordHash,
-      picturePath,
-      friends,
-      location,
-      occupation,
-      viewedProfile: Math.floor(Math.random() * 10000),
-      impressions: Math.floor(Math.random() * 10000),
+      senha: senhaHash,
+      fotoPerfil,
+      amigos,
+      localizacao,
+      ocupacao,
     });
-    const savedUser = await newUser.save();
-    res.status(201).json(savedUser);
+    const usuarioSalvo = await novoUsuario.save();
+    res.status(201).json(usuarioSalvo);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -41,16 +39,16 @@ export const register = async (req, res) => {
 /* LOGGING IN */
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email: email });
-    if (!user) return res.status(400).json({ msg: "User does not exist. " });
+    const { email, senha } = req.body;
+    const usuario = await User.findOne({ email: email });
+    if (!usuario) return res.status(400).json({ msg: "Usuário não existe " });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials. " });
+    const isMatch = await bcrypt.compare(senha, usuario.senha);
+    if (!isMatch) return res.status(400).json({ msg: "O email e/ou a senha estão incorretos " });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    delete user.password;
-    res.status(200).json({ token, user });
+    const token = jwt.sign({ id: usuario._id }, process.env.JWT_SECRET);
+    delete usuario.senha;
+    res.status(200).json({ token, usuario });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

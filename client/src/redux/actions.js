@@ -1,8 +1,8 @@
 // Definindo uma ação para adicionar um comentário
-export const addComment = (comment) => {
+export const adicionarComentario = (comentario) => {
     return {
-        type: 'ADD_COMMENT',
-        payload: comment,
+        type: 'ADICIONAR_COMENTARIO',
+        payload: comentario,
     };
 };
 

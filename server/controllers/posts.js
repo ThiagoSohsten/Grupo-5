@@ -1,22 +1,22 @@
 import Post from "../models/Post.js";
-import User from "../models/User.js";
+import User from "../models/Usuario.js";
 
 /* CREATE */
-export const createPost = async (req, res) => {
+export const criarPost = async (req, res) => {
   try {
-    const { userId, description, picturePath } = req.body;
-    const user = await User.findById(userId);
-    const newPost = new Post({
-      userId,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      location: user.location,
-      description,
-      userPicturePath: user.picturePath,
-      picturePath,
+    const { usuarioId, descricao, fotoPerfil } = req.body;
+    const usuario = await User.findById(usuarioId);
+    const novoPost = new Post({
+      usuarioId,
+      nome: usuario.nome,
+      sobrenome: usuario.sobrenome,
+      localizacao: usuario.localizacao,
+      descricao,
+      userPicturePath: usuario.fotoPerfil,
+      fotoPerfil,
       likes: {},
     });
-    await newPost.save();
+    await novoPost.save();
 
     const post = await Post.find();
     res.status(201).json(post);
@@ -35,10 +35,10 @@ export const getFeedPosts = async (req, res) => {
   }
 };
 
-export const getUserPosts = async (req, res) => {
+export const getPostsUsuario = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const post = await Post.find({ userId });
+    const { usuarioId } = req.params;
+    const post = await Post.find({ usuarioId });
     res.status(200).json(post);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -49,14 +49,14 @@ export const getUserPosts = async (req, res) => {
 export const likePost = async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId } = req.body;
+    const { usuarioId } = req.body;
     const post = await Post.findById(id);
-    const isLiked = post.likes.get(userId);
+    const isLiked = post.likes.get(usuarioId);
 
     if (isLiked) {
-      post.likes.delete(userId);
+      post.likes.delete(usuarioId);
     } else {
-      post.likes.set(userId, true);
+      post.likes.set(usuarioId, true);
     }
 
     const updatedPost = await Post.findByIdAndUpdate(
@@ -70,34 +70,3 @@ export const likePost = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
-
-// /* READ Comments */
-// export const getComments = async (req, res) => {
-//   try {
-//     const postId = req.params.postId;
-//     const post = await Post.findById(postId);
-//     if (!post) {
-//       return res.status(404).json({ message: "Post não encontrado" });
-//     }
-//     res.status(200).json({ comments: post.comments });
-//   } catch (error) {
-//     res.status(500).json({ message: "Erro ao buscar comentários" });
-//   }
-// };
-
-// /* CREATE Comment */
-// export const createComment = async (req, res) => {
-//   try {
-//     const postId = req.params.postId;
-//     const { text } = req.body;
-//     const post = await Post.findById(postId);
-//     if (!post) {
-//       return res.status(404).json({ message: "Post não encontrado" });
-//     }
-//     post.comments.push({ userId: req.userId, text });
-//     const updatedPost = await post.save();
-//     res.status(201).json(updatedPost);
-//   } catch (error) {
-//     res.status(500).json({ message: "Erro ao criar comentário" });
-//   }
-// };

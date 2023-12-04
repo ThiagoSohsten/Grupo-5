@@ -11,10 +11,10 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
-import commentRoutes from "./routes/comments.js";
-import { register } from "./controllers/auth.js";
-import { createPost } from "./controllers/posts.js";
-import { createComment } from "./controllers/comments.js";
+import commentRoutes from "./routes/comentarios.js";
+import { registro } from "./controllers/auth.js";
+import { criarPost } from "./controllers/posts.js";
+import { criarComentario } from "./controllers/comentarios.js";
 import { verifyToken } from "./middleware/auth.js";
 import User from "./models/User.js";
 import Post from "./models/Post.js";
@@ -45,15 +45,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
-app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
-app.post("/comment", verifyToken, upload.single("picture"), createComment);
+app.post("/auth/registro", upload.single("picture"), registro);
+app.post("/posts", verifyToken, upload.single("picture"), criarPost);
+app.post("/comentario", verifyToken, upload.single("picture"), criarComentario);
 
 /* ROUTES */
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
-app.use("/comments", commentRoutes);
+app.use("/comentarios", commentRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;

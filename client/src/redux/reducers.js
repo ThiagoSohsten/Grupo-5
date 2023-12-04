@@ -1,14 +1,14 @@
 const initialState = {
-    comments: [],
+    comentarios: [],
     // outros estados iniciais...
 };
 
 const commentsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'ADD_COMMENT':
+        case 'ADICIONAR_COMENTARIO':
             return {
                 ...state,
-                comments: [...state.comments, action.payload],
+                comentarios: [...state.comentarios, action.payload],
             };
         // Outros cases...
         default:
